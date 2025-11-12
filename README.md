@@ -71,6 +71,16 @@ Mini Bug Tracker is a production-ready issue tracking system designed for develo
 - Full dark mode support across all components
 - Optimized color schemes for readability
 
+**Bulk Actions**
+- Multi-select issues with checkboxes on each card
+- Select all/deselect all functionality with indeterminate state
+- Bulk status change for multiple issues simultaneously
+- Bulk delete with confirmation dialog
+- Floating action bar that appears when issues are selected
+- Selection counter displaying number of selected issues
+- Visual selection feedback with ring highlighting on selected cards
+- Clear selection button for quick deselection
+
 **Priority System**
 - Four-level priority hierarchy: Critical, High, Medium, Low
 - Visual priority indicators with distinct color schemes
@@ -295,6 +305,24 @@ Update issue status using either method:
 3. Enter comment text in the input field
 4. Submit to add the comment with timestamp
 
+### Using Bulk Actions
+
+Perform operations on multiple issues simultaneously:
+
+1. **Select Issues**: Click the checkbox on any issue card to select it
+2. **Select All**: Use the "Select all" checkbox at the top of the issue list to select all visible issues
+3. **Bulk Status Change**:
+   - Click "Change Status" in the floating action bar
+   - Select the desired status from the dropdown
+   - All selected issues will be updated simultaneously
+4. **Bulk Delete**:
+   - Click the "Delete" button in the action bar
+   - Confirm the action in the dialog
+   - All selected issues will be permanently deleted
+5. **Clear Selection**: Click "Clear" in the action bar or deselect individual issues
+
+The floating action bar appears at the bottom of the screen when one or more issues are selected, showing the selection count and available bulk actions.
+
 ## Project Structure
 
 ```
@@ -302,7 +330,9 @@ mini-bug-tracker/
 ├── public/                      # Static assets
 ├── src/
 │   ├── components/              # React components
+│   │   ├── BulkActionsBar.jsx   # Bulk operations action bar
 │   │   ├── CommentSection.jsx   # Comment display and input
+│   │   ├── Dashboard.jsx        # Analytics dashboard
 │   │   ├── FilterBar.jsx        # Search and filter controls
 │   │   ├── IssueCard.jsx        # Individual issue display
 │   │   ├── IssueList.jsx        # Issue grid container
@@ -311,6 +341,7 @@ mini-bug-tracker/
 │   ├── firebase/
 │   │   └── config.js            # Firebase initialization
 │   ├── hooks/
+│   │   ├── useDarkMode.js       # Dark mode state management
 │   │   └── useIssues.js         # Custom Firestore hook
 │   ├── App.jsx                  # Root application component
 │   ├── main.jsx                 # Application entry point

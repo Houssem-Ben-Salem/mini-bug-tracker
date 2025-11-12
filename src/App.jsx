@@ -7,6 +7,7 @@ import FilterBar from './components/FilterBar';
 import IssueModal from './components/IssueModal';
 import Toast from './components/Toast';
 import Dashboard from './components/Dashboard';
+import BulkActionsBar from './components/BulkActionsBar';
 
 /**
  * Main App Component
@@ -26,6 +27,7 @@ function App() {
   const [toast, setToast] = useState(null);
   const [currentView, setCurrentView] = useState('issues'); // 'dashboard' or 'issues'
   const [isDarkMode, toggleDarkMode] = useDarkMode();
+  const [selectedIssueIds, setSelectedIssueIds] = useState(new Set());
 
   // Initialize Firebase authentication
   useEffect(() => {
@@ -158,6 +160,65 @@ function App() {
       showToast(`Status updated to ${newStatus}`, 'info');
     } catch (error) {
       showToast('Failed to update status', 'error');
+    }
+  };
+
+  // Handle issue selection
+  const handleSelectIssue = (issueId) => {
+    setSelectedIssueIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(issueId)) {
+        newSet.delete(issueId);
+      } else {
+        newSet.add(issueId);
+      }
+      return newSet;
+    });
+  };
+
+  // Handle select all
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedIssueIds(new Set(filteredIssues.map((issue) => issue.id)));
+    } else {
+      setSelectedIssueIds(new Set());
+    }
+  };
+
+  // Clear selection
+  const handleClearSelection = () => {
+    setSelectedIssueIds(new Set());
+  };
+
+  // Handle bulk status change
+  const handleBulkStatusChange = async (newStatus) => {
+    const idsArray = Array.from(selectedIssueIds);
+    try {
+      await Promise.all(
+        idsArray.map((issueId) => updateStatus(issueId, newStatus))
+      );
+      showToast(
+        `Updated ${idsArray.length} issue${idsArray.length > 1 ? 's' : ''} to ${newStatus}`,
+        'success'
+      );
+      setSelectedIssueIds(new Set());
+    } catch (error) {
+      showToast('Failed to update some issues', 'error');
+    }
+  };
+
+  // Handle bulk delete
+  const handleBulkDelete = async () => {
+    const idsArray = Array.from(selectedIssueIds);
+    try {
+      await Promise.all(idsArray.map((issueId) => deleteIssue(issueId)));
+      showToast(
+        `Deleted ${idsArray.length} issue${idsArray.length > 1 ? 's' : ''}`,
+        'success'
+      );
+      setSelectedIssueIds(new Set());
+    } catch (error) {
+      showToast('Failed to delete some issues', 'error');
     }
   };
 
@@ -348,6 +409,9 @@ function App() {
               onEdit={handleEdit}
               onDelete={handleDelete}
               onStatusChange={handleStatusChange}
+              selectedIssueIds={selectedIssueIds}
+              onSelectIssue={handleSelectIssue}
+              onSelectAll={handleSelectAll}
             />
           </>
         )}
@@ -376,6 +440,16 @@ function App() {
           message={toast.message}
           type={toast.type}
           onClose={() => setToast(null)}
+        />
+      )}
+
+      {/* Bulk Actions Bar */}
+      {selectedIssueIds.size > 0 && (
+        <BulkActionsBar
+          selectedCount={selectedIssueIds.size}
+          onClearSelection={handleClearSelection}
+          onBulkStatusChange={handleBulkStatusChange}
+          onBulkDelete={handleBulkDelete}
         />
       )}
     </div>

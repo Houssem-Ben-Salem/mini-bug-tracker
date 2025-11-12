@@ -4,7 +4,7 @@ import React from 'react';
  * IssueCard Component
  * Displays individual issue with status, priority, and quick actions
  */
-const IssueCard = ({ issue, onEdit, onDelete, onStatusChange }) => {
+const IssueCard = ({ issue, onEdit, onDelete, onStatusChange, isSelected, onSelectIssue }) => {
   // Status flow: Open → In-Progress → Review → Closed
   const statusFlow = ['Open', 'In-Progress', 'Review', 'Closed'];
 
@@ -55,9 +55,23 @@ const IssueCard = ({ issue, onEdit, onDelete, onStatusChange }) => {
   };
 
   return (
-    <div className="card p-5 hover:scale-[1.02] transition-transform cursor-pointer">
+    <div className={`card p-5 hover:scale-[1.02] transition-all relative ${isSelected ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''}`}>
+      {/* Selection Checkbox */}
+      <div className="absolute top-3 left-3 z-10">
+        <input
+          type="checkbox"
+          checked={isSelected || false}
+          onChange={(e) => {
+            e.stopPropagation();
+            onSelectIssue(issue.id);
+          }}
+          onClick={(e) => e.stopPropagation()}
+          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+        />
+      </div>
+
       {/* Header with Priority and Status */}
-      <div className="flex justify-between items-start mb-3">
+      <div className="flex justify-between items-start mb-3 ml-8">
         <div className="flex gap-2 flex-wrap">
           <span className={getPriorityClass(issue.priority)}>
             {issue.priority || 'Medium'}
@@ -69,12 +83,12 @@ const IssueCard = ({ issue, onEdit, onDelete, onStatusChange }) => {
       </div>
 
       {/* Issue Title */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
         {issue.title}
       </h3>
 
       {/* Description Preview */}
-      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
         {issue.description}
       </p>
 
@@ -84,13 +98,13 @@ const IssueCard = ({ issue, onEdit, onDelete, onStatusChange }) => {
           {issue.labels.slice(0, 3).map((label, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+              className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-md"
             >
               {label}
             </span>
           ))}
           {issue.labels.length > 3 && (
-            <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">
+            <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-md">
               +{issue.labels.length - 3} more
             </span>
           )}
@@ -98,9 +112,9 @@ const IssueCard = ({ issue, onEdit, onDelete, onStatusChange }) => {
       )}
 
       {/* Footer with Metadata and Actions */}
-      <div className="flex justify-between items-center pt-3 border-t border-gray-100">
-        <div className="text-xs text-gray-500 space-y-1">
-          <div>Assignee: <span className="font-medium text-gray-700">{issue.assignee || 'Unassigned'}</span></div>
+      <div className="flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+          <div>Assignee: <span className="font-medium text-gray-700 dark:text-gray-300">{issue.assignee || 'Unassigned'}</span></div>
           <div>Created: {formatDate(issue.createdAt)}</div>
           {issue.comments && issue.comments.length > 0 && (
             <div className="flex items-center gap-1 text-blue-600">
