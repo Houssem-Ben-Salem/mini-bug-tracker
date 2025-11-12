@@ -53,6 +53,24 @@ Mini Bug Tracker is a production-ready issue tracking system designed for develo
 
 ### Advanced Features
 
+**Analytics Dashboard**
+- Comprehensive metrics and statistics overview
+- Real-time data visualization with interactive charts
+- Status distribution pie chart
+- Priority breakdown bar chart
+- 7-day trend line chart for issue creation
+- Key performance indicators: total issues, open issues, in-progress, closed
+- Calculated metrics: average time to close, critical issue count, completion rate
+- Responsive chart layouts for all screen sizes
+
+**Dark Mode**
+- System preference detection and respect
+- Manual toggle with sun/moon icon
+- Persistent preference storage in localStorage
+- Smooth transitions between themes
+- Full dark mode support across all components
+- Optimized color schemes for readability
+
 **Priority System**
 - Four-level priority hierarchy: Critical, High, Medium, Low
 - Visual priority indicators with distinct color schemes
@@ -104,7 +122,8 @@ Mini Bug Tracker is a production-ready issue tracking system designed for develo
 
 - **React 18.3.1** - Component-based UI library with hooks
 - **Vite 5.4.2** - Next-generation frontend build tool
-- **Tailwind CSS 3.4.1** - Utility-first CSS framework
+- **Tailwind CSS 3.4.1** - Utility-first CSS framework with dark mode support
+- **Recharts** - Composable charting library for React
 - **react-markdown 9.0.1** - Markdown rendering component
 
 ### Backend & Infrastructure
