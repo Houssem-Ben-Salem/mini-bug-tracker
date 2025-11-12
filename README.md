@@ -1,497 +1,538 @@
 # Mini Bug Tracker
 
-A professional, production-ready bug tracking application built with React, Tailwind CSS, and Firebase Firestore. Features real-time synchronization, multi-user support, and a comprehensive set of issue management tools.
+A full-stack, real-time bug tracking application built with modern web technologies. Features comprehensive issue management, multi-user collaboration, and instant synchronization across clients.
 
-## Live Demo
+**Live Demo:** [https://mini-bug-tracker.vercel.app/](https://mini-bug-tracker.vercel.app/)
 
-🚀 **[View Live Demo](#)** _(Link to be added after deployment)_
+## Table of Contents
 
-## Technology Stack
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Running Locally](#running-locally)
+- [Usage Guide](#usage-guide)
+- [Project Structure](#project-structure)
+- [Development](#development)
+- [Building for Production](#building-for-production)
+- [Deployment](#deployment)
+- [Security](#security)
+- [Contributing](#contributing)
+- [License](#license)
 
-- **Frontend Framework**: React 18 (Functional Components with Hooks)
-- **Build Tool**: Vite (Fast, modern build tool)
-- **Styling**: Tailwind CSS 3 (Utility-first CSS framework)
-- **Database**: Firebase Firestore (Real-time NoSQL cloud database)
-- **Authentication**: Firebase Authentication (Anonymous sign-in)
-- **Hosting**: Vercel (Automatic deployments, global CDN)
-- **Markdown Rendering**: react-markdown (For rich text descriptions)
+## Overview
+
+Mini Bug Tracker is a production-ready issue tracking system designed for development teams. It provides real-time synchronization, advanced filtering capabilities, and a comprehensive set of features for managing software bugs and feature requests. The application leverages Firebase Firestore for data persistence and real-time updates, enabling seamless collaboration across distributed teams.
 
 ## Features
 
-### Core Features ✅
+### Core Functionality
 
-1. **Issue Management**
-   - Create new issues with title, description, and metadata
-   - Edit existing issues with full form validation
-   - Delete issues with confirmation dialog
-   - Real-time updates across all connected clients
+**Issue Management**
+- Create, read, update, and delete (CRUD) operations for issues
+- Rich text descriptions with Markdown support
+- Automatic timestamp tracking (created and updated dates)
+- Customizable assignee field for issue ownership
 
-2. **Status Flow Management**
-   - Comprehensive workflow: `Open → In-Progress → Review → Closed`
-   - Quick status toggle buttons on issue cards
-   - Visual status badges with color coding
-   - Status filtering in the filter bar
+**Workflow Management**
+- Four-stage status flow: Open, In-Progress, Review, Closed
+- Quick status transitions via card-level controls
+- Visual status indicators with color-coded badges
+- Status-based filtering
 
-3. **Search & Filtering**
-   - Full-text search across issue titles and descriptions (case-insensitive)
-   - Filter by status (exact match)
-   - Filter by priority (exact match)
-   - Multiple filters can be applied simultaneously
-   - Active filter pills with individual clear buttons
-   - Results counter showing filtered/total issues
+**Search and Filtering**
+- Full-text search across issue titles and descriptions
+- Case-insensitive search implementation
+- Multi-criteria filtering (status, priority, text search)
+- Real-time filter results with count display
+- Active filter visualization and individual filter removal
 
-### Bonus Features 🌟
+### Advanced Features
 
-4. **Priority System**
-   - Four priority levels: Critical, High, Medium, Low
-   - Color-coded priority badges (Red → Orange → Yellow → Green)
-   - Priority-based filtering
-   - Visual hierarchy in issue cards
+**Priority System**
+- Four-level priority hierarchy: Critical, High, Medium, Low
+- Visual priority indicators with distinct color schemes
+- Priority-based filtering and sorting capabilities
 
-5. **Labels/Tags System**
-   - Add multiple labels to each issue
-   - Dynamic label management (add/remove)
-   - Label display with overflow handling (+N more)
-   - Custom label input with Enter key support
+**Labeling System**
+- Dynamic label creation and management
+- Multi-label support per issue
+- Label-based categorization and organization
+- Visual label display with overflow handling
 
-6. **Comment System**
-   - Add comments to any issue
-   - Comments display user ID and timestamp
-   - Sorted by newest first
-   - User identification (You vs. User ID)
-   - Comment counter on issue cards
-   - Scrollable comment section
+**Collaboration Tools**
+- Comment system with threaded discussions
+- User identification and timestamp tracking
+- Real-time comment synchronization
+- Comment counter on issue cards
 
-7. **Markdown Support**
-   - Rich text descriptions using Markdown syntax
-   - Live preview toggle in the issue modal
-   - Support for headings, lists, code blocks, links, etc.
+**Real-Time Synchronization**
+- Instant updates across all connected clients
+- Firestore onSnapshot listeners for live data
+- Optimistic UI updates with error handling
+- Conflict-free replicated data structure
 
-8. **Multi-User Support**
-   - Firebase Anonymous Authentication
-   - User ID displayed prominently in header
-   - Assignee field for issue ownership
-   - Current user tracking in comments
+### User Experience
 
-### Production-Ready Features 🚀
+**Interface Design**
+- Responsive, mobile-first design
+- Adaptive layouts for desktop, tablet, and mobile devices
+- Smooth animations and transitions
+- Toast notification system for user feedback
+- Loading states and skeleton screens
+- Empty state handling with actionable guidance
 
-9. **Real-Time Synchronization**
-   - Firestore `onSnapshot` listeners for live updates
-   - Automatic UI updates when data changes
-   - No manual refresh required
+**Accessibility**
+- Keyboard navigation support (ESC to close modals)
+- ARIA labels and semantic HTML
+- High contrast color schemes
+- Focus management for modal interactions
 
-10. **Toast Notifications**
-    - Success notifications (green)
-    - Error notifications (red)
-    - Info notifications (blue)
-    - Auto-dismiss after 3 seconds
-    - Smooth slide-in animation
+**Performance Optimizations**
+- Memoized filter computations
+- Efficient re-render strategies
+- Lazy loading for components
+- Optimized Firestore query patterns
 
-11. **Keyboard Shortcuts**
-    - `ESC` key to close modals
-    - `Enter` key to add labels
-    - Improved accessibility
+## Technology Stack
 
-12. **Loading States**
-    - Spinner during authentication
-    - Loading indicator for issues
-    - Disabled buttons during async operations
-    - Form submission feedback
+### Frontend
 
-13. **Error Handling**
-    - Try-catch blocks on all async operations
-    - User-friendly error messages
-    - Firebase configuration validation
-    - Graceful degradation
+- **React 18.3.1** - Component-based UI library with hooks
+- **Vite 5.4.2** - Next-generation frontend build tool
+- **Tailwind CSS 3.4.1** - Utility-first CSS framework
+- **react-markdown 9.0.1** - Markdown rendering component
 
-14. **Responsive Design**
-    - Mobile-first approach
-    - Responsive grid layout (1/2/3 columns)
-    - Touch-friendly buttons and interactions
-    - Optimized for all screen sizes
+### Backend & Infrastructure
 
-15. **Empty States**
-    - "No issues found" message with icon
-    - Filter adjustment suggestions
-    - "No comments" placeholder
+- **Firebase Firestore** - NoSQL cloud database with real-time capabilities
+- **Firebase Authentication** - Anonymous authentication for user management
+- **Vercel** - Serverless deployment platform with edge caching
 
-## Project Structure
+### Development Tools
+
+- **PostCSS** - CSS transformation tool
+- **Autoprefixer** - CSS vendor prefix automation
+- **ESLint** - Code quality and consistency
+
+## Architecture
+
+### Component Hierarchy
 
 ```
-Mini_Bug_Tracker/
-├── src/
-│   ├── components/
-│   │   ├── IssueCard.jsx          # Individual issue display
-│   │   ├── IssueList.jsx          # Grid of issues
-│   │   ├── IssueModal.jsx         # Create/Edit modal
-│   │   ├── FilterBar.jsx          # Search and filtering UI
-│   │   ├── CommentSection.jsx     # Comments display and input
-│   │   └── Toast.jsx              # Notification system
-│   ├── firebase/
-│   │   └── config.js              # Firebase initialization
-│   ├── hooks/
-│   │   └── useIssues.js           # Custom hook for Firestore CRUD
-│   ├── App.jsx                    # Main application component
-│   ├── main.jsx                   # React entry point
-│   └── index.css                  # Global styles and Tailwind
-├── public/                        # Static assets
-├── .env.local                     # Firebase credentials (gitignored)
-├── .env.example                   # Environment template
-├── package.json                   # Dependencies
-├── vite.config.js                 # Vite configuration
-├── tailwind.config.js             # Tailwind configuration
-└── README.md                      # This file
+App
+├── FilterBar
+├── IssueList
+│   └── IssueCard (multiple instances)
+├── IssueModal
+│   └── CommentSection
+└── Toast
 ```
 
-## Installation & Setup
+### Data Flow
+
+```
+User Action → Event Handler → Firebase Operation → Firestore → onSnapshot Listener → State Update → UI Re-render
+```
+
+### State Management
+
+The application uses React's built-in state management with hooks:
+
+- **useState** - Local component state
+- **useEffect** - Side effects and lifecycle management
+- **useMemo** - Memoized computations for filtering
+- **Custom Hook (useIssues)** - Encapsulated Firestore operations
+
+### Firebase Integration
+
+**Authentication Flow:**
+```
+App Mount → initializeAuth() → signInAnonymously() → User State Update
+```
+
+**Data Operations:**
+```
+Component → useIssues Hook → Firestore SDK → Cloud Firestore → Real-time Updates
+```
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm or yarn
-- Firebase account (free tier)
+- Node.js version 16.x or higher
+- npm version 7.x or higher (or yarn 1.22.x)
+- Firebase account (free tier supported)
+- Git for version control
 
-### Step 1: Clone the Repository
+### Installation
 
+1. Clone the repository:
 ```bash
-git clone <your-repo-url>
-cd Mini_Bug_Tracker
+git clone https://github.com/yourusername/mini-bug-tracker.git
+cd mini-bug-tracker
 ```
 
-### Step 2: Install Dependencies
-
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-### Step 3: Firebase Setup
+### Configuration
 
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project or select an existing one
-3. Enable **Firestore Database**:
-   - Navigate to **Firestore Database** in the left sidebar
-   - Click **Create Database**
-   - Start in **Test Mode** (or configure security rules)
-   - Choose a location closest to your users
-4. Enable **Anonymous Authentication**:
-   - Navigate to **Authentication** in the left sidebar
-   - Click **Get Started**
-   - Go to **Sign-in method** tab
-   - Enable **Anonymous** authentication
-5. Get your Firebase configuration:
-   - Go to **Project Settings** (gear icon)
-   - Scroll to **Your apps** section
-   - Click **Web app** icon (</>) to create a web app
+#### Firebase Setup
+
+1. Create a new Firebase project at [Firebase Console](https://console.firebase.google.com/)
+
+2. Enable Firestore Database:
+   - Navigate to Firestore Database in the sidebar
+   - Click "Create Database"
+   - Select "Start in test mode" for development
+   - Choose your preferred region
+
+3. Enable Anonymous Authentication:
+   - Navigate to Authentication section
+   - Go to "Sign-in method" tab
+   - Enable "Anonymous" provider
+
+4. Obtain Firebase configuration:
+   - Go to Project Settings (gear icon)
+   - Scroll to "Your apps" section
+   - Register a web app if not already done
    - Copy the `firebaseConfig` object
 
-### Step 4: Configure Environment Variables
+#### Environment Variables
 
 1. Copy the example environment file:
-   ```bash
-   cp .env.example .env.local
-   ```
+```bash
+cp .env.example .env.local
+```
 
-2. Edit `.env.local` and replace placeholders with your Firebase credentials:
-   ```env
-   VITE_FIREBASE_API_KEY=your_actual_api_key
-   VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-   VITE_FIREBASE_PROJECT_ID=your_project_id
-   VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
-   VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-   VITE_FIREBASE_APP_ID=your_app_id
-   ```
+2. Edit `.env.local` and add your Firebase credentials:
+```env
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
 
-### Step 5: Run the Development Server
+**Important:** Never commit `.env.local` to version control. This file is automatically ignored by `.gitignore`.
 
+### Running Locally
+
+Start the development server:
 ```bash
 npm run dev
 ```
 
-The application will open at `http://localhost:3000`
+The application will be available at `http://localhost:3000`
 
-### Step 6: Verify Firebase Connection
+## Usage Guide
 
-- The app should authenticate automatically
-- Check the browser console for "✅ Firebase initialized successfully"
-- If you see errors, double-check your `.env.local` configuration
+### Creating Issues
+
+1. Click the "New Issue" button in the main interface
+2. Fill in the required fields:
+   - **Title**: Brief summary of the issue (required)
+   - **Description**: Detailed explanation with Markdown support (required)
+   - **Status**: Select from available workflow stages
+   - **Priority**: Choose urgency level
+   - **Assignee**: Specify responsible user
+   - **Labels**: Add categorization tags
+3. Submit the form to create the issue
+
+### Editing Issues
+
+1. Click the edit icon on any issue card
+2. Modify desired fields in the modal
+3. Add comments in the dedicated section
+4. Save changes to update the issue
+
+### Filtering and Search
+
+Use the filter bar to narrow down issues:
+- **Text Search**: Enter keywords to search titles and descriptions
+- **Status Filter**: Select specific workflow stage
+- **Priority Filter**: Filter by urgency level
+
+Multiple filters can be applied simultaneously. Active filters are displayed as removable tags.
+
+### Status Management
+
+Update issue status using either method:
+- **Quick Toggle**: Click the arrow button on issue cards to advance through workflow stages
+- **Manual Selection**: Edit the issue and select desired status from dropdown
+
+### Adding Comments
+
+1. Open an issue in edit mode
+2. Navigate to the comments section
+3. Enter comment text in the input field
+4. Submit to add the comment with timestamp
+
+## Project Structure
+
+```
+mini-bug-tracker/
+├── public/                      # Static assets
+├── src/
+│   ├── components/              # React components
+│   │   ├── CommentSection.jsx   # Comment display and input
+│   │   ├── FilterBar.jsx        # Search and filter controls
+│   │   ├── IssueCard.jsx        # Individual issue display
+│   │   ├── IssueList.jsx        # Issue grid container
+│   │   ├── IssueModal.jsx       # Create/Edit modal dialog
+│   │   └── Toast.jsx            # Notification component
+│   ├── firebase/
+│   │   └── config.js            # Firebase initialization
+│   ├── hooks/
+│   │   └── useIssues.js         # Custom Firestore hook
+│   ├── App.jsx                  # Root application component
+│   ├── main.jsx                 # Application entry point
+│   └── index.css                # Global styles
+├── .env.example                 # Environment template
+├── .gitignore                   # Git ignore rules
+├── index.html                   # HTML entry point
+├── package.json                 # Project dependencies
+├── postcss.config.js            # PostCSS configuration
+├── tailwind.config.js           # Tailwind configuration
+└── vite.config.js               # Vite build configuration
+```
+
+### Key Files
+
+**src/App.jsx**
+- Main application logic
+- State management
+- Firebase authentication
+- Event handlers
+
+**src/hooks/useIssues.js**
+- Firestore CRUD operations
+- Real-time listeners
+- Error handling
+- Loading states
+
+**src/firebase/config.js**
+- Firebase initialization
+- Authentication setup
+- Environment variable loading
+
+## Development
+
+### Code Style
+
+The project follows these conventions:
+- Functional components with React Hooks
+- Descriptive variable and function names
+- JSDoc comments for complex functions
+- Component-level error boundaries
+- Consistent file and folder naming
+
+### Adding New Features
+
+1. Create feature branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+2. Implement changes following existing patterns
+3. Test thoroughly in development environment
+4. Submit pull request with detailed description
+
+### Testing
+
+Manual testing checklist:
+- Create issue with all fields
+- Edit existing issue
+- Delete issue
+- Test all filter combinations
+- Verify status transitions
+- Add comments
+- Test on mobile viewport
+- Verify real-time sync (multiple browser tabs)
 
 ## Building for Production
 
+Generate optimized production build:
 ```bash
 npm run build
 ```
 
-The optimized production build will be in the `dist/` directory.
+Build output will be in the `dist/` directory.
+
+Preview production build locally:
+```bash
+npm run preview
+```
 
 ## Deployment
 
-### Deploy to Vercel (Recommended)
+### Vercel (Recommended)
 
-1. Install Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
+1. Push code to GitHub repository
 
-2. Deploy:
-   ```bash
-   vercel
-   ```
+2. Import project in Vercel dashboard
 
-3. Add environment variables in Vercel dashboard:
-   - Go to your project settings
-   - Navigate to **Environment Variables**
-   - Add all `VITE_FIREBASE_*` variables
+3. Configure environment variables:
+   - Add all `VITE_FIREBASE_*` variables from `.env.local`
 
-4. Redeploy to apply environment variables
+4. Deploy application
 
-### Deploy to Firebase Hosting
+Vercel automatically handles:
+- Continuous deployment from Git
+- HTTPS certificates
+- Global CDN distribution
+- Automatic scaling
 
-1. Install Firebase CLI:
-   ```bash
-   npm install -g firebase-tools
-   ```
+### Alternative Platforms
 
-2. Login and initialize:
-   ```bash
-   firebase login
-   firebase init hosting
-   ```
+**Netlify:**
+```bash
+npm run build
+netlify deploy --prod --dir=dist
+```
 
-3. Configure `firebase.json`:
-   ```json
-   {
-     "hosting": {
-       "public": "dist",
-       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-       "rewrites": [{ "source": "**", "destination": "/index.html" }]
-     }
-   }
-   ```
+**Firebase Hosting:**
+```bash
+firebase init hosting
+npm run build
+firebase deploy --only hosting
+```
 
-4. Build and deploy:
-   ```bash
-   npm run build
-   firebase deploy
-   ```
+## Security
 
-## Firestore Security Rules
+### Firestore Security Rules
 
-For production, update your Firestore security rules:
+For production deployment, implement these Firestore security rules:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /issues/{issueId} {
-      // Allow authenticated users to read all issues
+      // Allow read access to authenticated users
       allow read: if request.auth != null;
 
-      // Allow authenticated users to create issues
+      // Allow create for authenticated users
       allow create: if request.auth != null
-                    && request.resource.data.assignee == request.auth.uid;
+                    && request.resource.data.keys().hasAll(['title', 'description', 'status', 'priority']);
 
-      // Allow users to update issues they created or are assigned to
+      // Allow update for authenticated users
       allow update: if request.auth != null;
 
-      // Allow users to delete their own issues
-      allow delete: if request.auth != null
-                    && resource.data.assignee == request.auth.uid;
+      // Allow delete for authenticated users
+      allow delete: if request.auth != null;
     }
   }
 }
 ```
 
-## Usage Guide
+### Best Practices
 
-### Creating an Issue
+- Never commit `.env.local` to version control
+- Rotate Firebase API keys periodically
+- Use Firebase App Check in production
+- Implement rate limiting for Firestore operations
+- Monitor usage via Firebase console
 
-1. Click the **New Issue** button
-2. Fill in the required fields:
-   - **Title**: Brief summary (required)
-   - **Description**: Detailed explanation with Markdown support (required)
-   - **Status**: Select from Open, In-Progress, Review, Closed
-   - **Priority**: Select from Low, Medium, High, Critical
-   - **Assignee**: Auto-filled with your user ID
-   - **Labels**: Add relevant tags (optional)
-3. Click **Create Issue**
-
-### Editing an Issue
-
-1. Click the **Edit** button (pencil icon) on any issue card
-2. Modify the fields as needed
-3. Add comments in the comment section
-4. Click **Update Issue**
-
-### Filtering Issues
-
-1. Use the **Search** box to find issues by title or description
-2. Select a **Status** from the dropdown to filter by workflow stage
-3. Select a **Priority** to filter by urgency
-4. All filters work together
-5. Click **Clear All** to reset filters
-
-### Managing Issue Status
-
-- Click the **→** arrow button on an issue card to advance its status
-- Status progresses: Open → In-Progress → Review → Closed → (loops back to Open)
-- Or edit the issue and select a specific status
-
-## Architecture Highlights
-
-### Component-Based Design
-
-- **Separation of Concerns**: Each component has a single responsibility
-- **Reusability**: Components like `Toast` and `CommentSection` are highly reusable
-- **Composition**: Complex UIs built from smaller, manageable pieces
+## API Reference
 
 ### Custom Hooks
 
-- **`useIssues` Hook**: Encapsulates all Firestore logic
-  - Real-time listeners
-  - CRUD operations
-  - Error handling
-  - Loading states
+#### useIssues(userId)
 
-### State Management
+Primary hook for Firestore operations.
 
-- **React Hooks**: `useState`, `useEffect`, `useMemo`
-- **Optimized Filtering**: `useMemo` prevents unnecessary re-renders
-- **Derived State**: Filtered issues computed from filters and issues
+**Parameters:**
+- `userId` (string): Current authenticated user ID
 
-### Real-Time Data Flow
-
+**Returns:**
+```typescript
+{
+  issues: Array<Issue>,           // Array of issue objects
+  loading: boolean,               // Loading state
+  error: string | null,           // Error message
+  createIssue: (data) => Promise<string>,
+  updateIssue: (id, data) => Promise<void>,
+  deleteIssue: (id) => Promise<void>,
+  addComment: (id, text) => Promise<void>,
+  updateStatus: (id, status) => Promise<void>
+}
 ```
-Firestore DB → onSnapshot → useIssues Hook → App State → Components → UI
-User Action → Handler → Firebase Operation → Real-time Update → All Clients
+
+**Example:**
+```javascript
+const { issues, loading, createIssue } = useIssues(user?.uid);
+
+await createIssue({
+  title: 'Bug in login flow',
+  description: 'Users cannot log in with email',
+  status: 'Open',
+  priority: 'High',
+  assignee: user.uid,
+  labels: ['authentication', 'urgent']
+});
 ```
 
-## Creative Decisions & Justifications
+### Data Models
 
-### Why This Tech Stack?
+#### Issue Object
 
-**React + Vite**:
-- Modern, fast development experience
-- Hot Module Replacement (HMR) for instant feedback
-- Optimized production builds
-- Industry-standard for 2024+
+```typescript
+interface Issue {
+  id: string;                    // Firestore document ID
+  title: string;                 // Issue title (required)
+  description: string;           // Detailed description (required)
+  status: 'Open' | 'In-Progress' | 'Review' | 'Closed';
+  priority: 'Low' | 'Medium' | 'High' | 'Critical';
+  assignee: string;              // User ID
+  labels: string[];              // Array of label strings
+  comments: Comment[];           // Array of comment objects
+  createdAt: Timestamp;          // Firestore timestamp
+  updatedAt: Timestamp;          // Firestore timestamp
+}
+```
 
-**Tailwind CSS**:
-- Rapid UI development without context switching
-- Consistent design system
-- Highly customizable
-- Small production bundle (purges unused styles)
+#### Comment Object
 
-**Firebase Firestore**:
-- Real-time synchronization out of the box
-- No backend code required
-- Scalable and reliable
-- Free tier sufficient for this project
-- Multi-user support by default
-
-**Vercel Hosting**:
-- Zero-config deployment
-- Automatic HTTPS
-- Global CDN
-- Git integration for CI/CD
-- Free for hobby projects
-
-### Design Philosophy
-
-1. **User-Centric**: Every feature serves the user's needs
-2. **Production-Quality**: Error handling, loading states, and polish throughout
-3. **Scalable Architecture**: Easy to add new features or refactor
-4. **Code Maintainability**: Clear structure, comments, and naming conventions
-5. **Performance**: Optimized re-renders, lazy loading, and efficient queries
-
-### Going Beyond Requirements
-
-The 12-hour timeframe allowed for implementing not just the minimum requirements, but also:
-- **Real-time collaboration**: Multiple users can work simultaneously
-- **Rich UX**: Markdown support, toast notifications, keyboard shortcuts
-- **Professional polish**: Animations, responsive design, comprehensive error handling
-- **Production-ready**: Security rules, environment variables, deployment guides
-
-## Development Timeline
-
-- **Phase 1 (1.5h)**: Project setup, Tailwind configuration, Firebase initialization
-- **Phase 2 (1h)**: Firebase integration, custom hooks, authentication
-- **Phase 3 (1.5h)**: Core components (IssueCard, IssueList, App shell)
-- **Phase 4 (1h)**: FilterBar and multi-criteria filtering logic
-- **Phase 5 (1.5h)**: IssueModal with create/edit functionality
-- **Phase 6 (1.5h)**: CommentSection and bonus features
-- **Phase 7 (1h)**: Toast notifications, keyboard shortcuts, polish
-- **Phase 8 (1h)**: README documentation
-- **Phase 9 (30min)**: Deployment and testing
-
-**Total**: ~9.5 hours (allowing 2.5h buffer for debugging)
-
-## Troubleshooting
-
-### Firebase Connection Error
-
-**Problem**: App shows "Configuration Error" message
-
-**Solution**:
-1. Verify `.env.local` exists and has correct values
-2. Check Firebase console for API key
-3. Ensure Anonymous Authentication is enabled
-4. Restart dev server after changing `.env.local`
-
-### Issues Not Appearing
-
-**Problem**: Can't see any issues
-
-**Solution**:
-1. Check browser console for errors
-2. Verify Firestore security rules allow reads
-3. Create a test issue
-4. Check Firestore console to see if data is being written
-
-### Build Errors
-
-**Problem**: Build fails with module errors
-
-**Solution**:
-1. Delete `node_modules` and reinstall: `rm -rf node_modules && npm install`
-2. Clear Vite cache: `rm -rf node_modules/.vite`
-3. Ensure all dependencies are installed: `npm install`
-
-## Future Enhancements
-
-Potential features for future iterations:
-- [ ] User authentication with email/password
-- [ ] File attachments on issues
-- [ ] Issue templates
-- [ ] Activity timeline/audit log
-- [ ] Email notifications
-- [ ] Dark mode support
-- [ ] Issue assignment to multiple users
-- [ ] Issue relationships (blocked by, duplicates)
-- [ ] Advanced reporting and analytics
-- [ ] Export issues to CSV/JSON
-- [ ] Drag-and-drop status updates (Kanban board)
+```typescript
+interface Comment {
+  userId: string;                // Comment author ID
+  text: string;                  // Comment content
+  timestamp: number;             // Unix timestamp
+}
+```
 
 ## Contributing
 
-This is a take-home assignment project. If you'd like to extend it:
+Contributions are welcome. Please follow these guidelines:
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/my-feature`
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Pull Request Process
+
+- Ensure code follows existing style conventions
+- Update documentation for new features
+- Test changes thoroughly
+- Provide detailed PR description
 
 ## License
 
-MIT License - feel free to use this project for learning or as a portfolio piece.
-
-## Contact
-
-**Developer**: [Your Name]
-**Email**: [Your Email]
-**GitHub**: [Your GitHub Profile]
-**LinkedIn**: [Your LinkedIn Profile]
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-Built with ❤️ using React, Tailwind CSS, and Firebase
+**Built with React, Tailwind CSS, and Firebase**
+
+For issues and feature requests, please use the [GitHub issue tracker](https://github.com/yourusername/mini-bug-tracker/issues).
